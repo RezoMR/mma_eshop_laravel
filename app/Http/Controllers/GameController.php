@@ -28,7 +28,7 @@ class GameController extends Controller
     {
 
         $Code = codes::create([
-            'code' => $request->codee,
+            'code' => $request->input('codee'),
         ]);
 
         return response()->json($Code);

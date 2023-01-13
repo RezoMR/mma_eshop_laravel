@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
     //-------------------GAME------
     Route::controller(\App\Http\Controllers\GameController::class)->group(function(){
         Route::get('game', 'index')->name('game');
-        Route::post('game/ajax', 'gameAjaxx');
+        Route::post('game/ajax', 'gameAjaxx')->name('gameAjax');
     });
 
     //-------------------CALENDAR------

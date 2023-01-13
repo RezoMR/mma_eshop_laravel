@@ -35,14 +35,14 @@
 
         $.ajax({
             type: 'POST',
-            url: '/game/score',
+            url: '{{ route('gameAjax') }}',
             data: { codee: generateRandomString() },
             success: function(response) {
-                alert("nedojebalo sa");
+                alert("nepokazilo sa");
                 console.log('Score saved successfully!');
             },
             error: function(xhr) {
-                alert("dojebalo sa");
+                alert("pokazilo sa");
                 console.log('Error saving score: ' + xhr.responseText);
             }
         });
@@ -116,11 +116,35 @@
         var characterLeft = parseInt(window.getComputedStyle(character).getPropertyValue("left"));
         var drop = 0;
         if(characterTop <= 0){
-            if((counter-9)> 5){
-                alert("skoreee");
-                ajax();
+            // if((counter-9)> 5){
+            //     alert("skoreee");
+            //     ajax();
+            // } else {
+            //     alert("Ste slabý");
+            // }
+
+            if((counter-9) > 5) {
+                let randomString = generateRandomString(10);   // "W4dc4sg3Kf"
+
+                $.ajax({
+                    url: SITEURL + '/gameAjax',
+                    type: "POST",
+                    data: {
+                        codee: 'randomString',
+                    },
+                    success: function (response) {
+                        displayMessage("Event Updated Successfully");
+                        alert("Dosiahol si dostatočné skóre, tvoj kód na zľavu: " + randomString);
+                    },
+                    error: function(xhr) {
+                        alert("dojebalo sa");
+                        console.log('Error saving score: ' + xhr.responseText);
+                    }
+
+                });
+
             } else {
-                alert("Ste slabý");
+                alert("Prehral si! Tvoje Skóre je: "+(counter-9));
             }
             clearInterval(blocks);
             location.reload();
