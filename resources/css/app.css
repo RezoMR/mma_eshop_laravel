@@ -1,0 +1,36 @@
+h1{
+    font-family: fantasy;
+    color: black;
+}
+p1{
+    font-family: "Ink Free", ui-serif;
+}
+.popis {
+    align-items: center;
+}
+
+.a{
+    text-decoration: none !important;
+    text-underline: none !important;
+}
+.navbar{
+    display: inline;
+    font-size: 25px;
+    text-decoration: none;
+    margin-right: 20px;
+    /*margin-top: 30px;*/
+    border: 1px black solid;
+    padding: 7px 0px 7px 12px;
+    background: black;
+    border-radius: .65rem ;
+}
+a.navbar_link{
+    color: white;
+    text-shadow: 3px 1px 1px black;
+    transition: all 0.5s;
+    text-decoration: none;
+}
+a.navbar_link:hover{
+    color: red;
+    text-decoration: none;
+}
