@@ -14,11 +14,7 @@
 <div id="game">
     <div id="character"></div>
 </div>
-<div>
 
-    <p>{!! $grid->show()!!}</p>
-
-</div>
 <script type="text/javascript">
 
     var character = document.getElementById("character");
@@ -36,14 +32,17 @@
     });
 
     function ajax() {
+
         $.ajax({
             type: 'POST',
             url: '/game/score',
-            data: { codee: counter-9 },
+            data: { codee: generateRandomString() },
             success: function(response) {
+                alert("nedojebalo sa");
                 console.log('Score saved successfully!');
             },
             error: function(xhr) {
+                alert("dojebalo sa");
                 console.log('Error saving score: ' + xhr.responseText);
             }
         });
@@ -117,7 +116,12 @@
         var characterLeft = parseInt(window.getComputedStyle(character).getPropertyValue("left"));
         var drop = 0;
         if(characterTop <= 0){
-            ajax();
+            if((counter-9)> 5){
+                alert("skoreee");
+                ajax();
+            } else {
+                alert("Ste slabý");
+            }
             clearInterval(blocks);
             location.reload();
         }

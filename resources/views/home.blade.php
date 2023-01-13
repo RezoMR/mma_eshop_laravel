@@ -18,7 +18,7 @@
             </p>
         </div>
         <div class="col-6">
-            <img src="public/imgs/jiri.webp" alt="">
+            <img src="/imgs/jiri.webp" alt="">
         </div>
     </div>
 </div>

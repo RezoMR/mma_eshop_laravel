@@ -14,10 +14,13 @@
         <div class="card">
             <img src={{$product->img}} alt="obrazok" style="width:100%">
             <h1>{{ $product->name }}</h1>
-        <p class="price">{{ $product->price }}</p>
+
+        <p class="price">{{ $product->price }}€</p>
             <p>{{ $product->popis }}</p>
             <p><button>Add to Cart</button></p>
         </div>
+        <br>
+        <br>
     @endforeach
 
 @endsection

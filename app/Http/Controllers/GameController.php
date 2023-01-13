@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Aginev\Datagrid\Datagrid;
 use App\Models\Codes;
-use App\Models\Gamer;
-use http\Client\Curl\User;
-use http\Env\Response;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 
 class GameController extends Controller
 {
@@ -19,87 +15,24 @@ class GameController extends Controller
      */
     public function index(Request $request)
     {
-        $gamers = \App\Models\Gamer::paginate(10);
 
-        $grid = new Datagrid($gamers, $request->get('f', []));
-
-        $grid->setColumn('name', 'Gamers name')
-                ->setColumn('score' , 'Score');
-
-        return view('game', ['grid' => $grid]);
+        return view('game');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return response()
+     * @return \Illuminate\Http\JsonResponse()
      */
-    public function gameAjaxx(Request $request): Response
+    public function gameAjaxx(Request $request): \Illuminate\Http\JsonResponse
     {
 
-        $Code = Codes::create([
+        $Code = codes::create([
             'code' => $request->codee,
         ]);
 
         return response()->json($Code);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

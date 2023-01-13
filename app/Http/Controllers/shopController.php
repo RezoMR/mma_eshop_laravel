@@ -33,7 +33,7 @@ class shopController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -44,7 +44,7 @@ class shopController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -55,7 +55,7 @@ class shopController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $request
+     * @param int $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function showAll(Request $request)
@@ -66,9 +66,9 @@ class shopController extends Controller
 
         $grid->setColumn('name', 'name')
             ->setColumn('price', 'price')
-            ->setColumn('popis' , 'popis')
+            ->setColumn('popis', 'popis')
             ->setActionColumn([
-                'wrapper' => function($value, $row) {
+                'wrapper' => function ($value, $row) {
                     return '<a href="' . route('deleteProduct', [$row->id]) . '" class="btn btn-danger delete-btn">Delete</a>';
                 }
             ]);
@@ -80,16 +80,26 @@ class shopController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function addProd(Request $request)
     {
+        $request->validate([
+            'name' => 'string|max:255',
+            'price' => 'string|max:255',
+            'img' => 'string|max:255',
+            'popis' => 'string|max:255',
+        ]);
+
+        $string1 = "/imgs/";
+        $result = $string1 . "" . $request->img;
+
         $products = products::create([
             'name' => $request->name,
             'price' => $request->cena,
-            'img' => $request->img,
+            'img' => $result,
             'popis' => $request->popis,
         ]);
 
@@ -107,17 +117,5 @@ class shopController extends Controller
         $products->delete();
         return redirect()->route('productShow')->with('message', 'Product deleted successfully');
     }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function deleteProf(Request $request)
-    {
-//        $user = Auth::user();
-//        return view('profile.delete_profile', ['user' => $user]);
-    }
 }
+
