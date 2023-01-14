@@ -69,7 +69,8 @@ class shopController extends Controller
             ->setColumn('popis', 'popis')
             ->setActionColumn([
                 'wrapper' => function ($value, $row) {
-                    return '<a href="' . route('deleteProduct', [$row->id]) . '" class="btn btn-danger delete-btn">Delete</a>';
+                    return ' <a href="' . route('editProduct', [$row->id]) . '" class="btn btn-danger delete-btn">Edit</a>
+                    <a href="' . route('deleteProduct', [$row->id]) . '" class="btn btn-danger delete-btn">Delete</a>';
                 }
             ]);
 
@@ -117,5 +118,53 @@ class shopController extends Controller
         $products->delete();
         return redirect()->route('productShow')->with('message', 'Product deleted successfully');
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function edit(Request $request)
+    {
+        $products = \App\Models\products::find($request->id);
+
+        return view('shop.edit', ['products' => $products]);
+    }
+
+    public function update(Request $request)
+    {
+    $products = products::find($request->id);
+
+            $request->validate([
+                'name' => 'nullable|string|max:255',
+                'popis' => 'nullable|string|max:255',
+                'price' => 'nullable|string|max:255',
+                'img' => 'nullable|string|max:255',
+            ]);
+
+            // aktualizujte údaje používateľa podľa údajov z formulára
+            if($request->filled('name')) {
+                $products->name = $request->input('name');
+            }
+            if($request->filled('price')) {
+                $products->price = $request->input('price');
+            }
+            if($request->filled('popis')) {
+              $products->popis = $request->input('popis');
+            }
+            if($request->filled('img')) {
+             $products->img = $request->input('img');
+            }
+
+
+
+            // uložte aktualizácie do databázy
+            $products->save();
+
+            // presmerujte používateľa na stránku s profilom a oznámte mu úspešnú aktualizáciu
+            return redirect('shop')->with('success', 'Produkt bol úspešne aktualizovaný');
+
+        }
+
 }
 

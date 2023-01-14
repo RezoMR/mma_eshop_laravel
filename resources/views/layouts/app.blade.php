@@ -47,7 +47,7 @@
                     {{ __('Add Product') }}
                 </a>
                 <a class="dropdown-item" href="{{ route('productShow') }}" >
-                    {{ __('Delete Product') }}
+                    {{ __('Spravuj Product') }}
                 </a>
                 <a class="dropdown-item" href="{{ route('shopView') }}" >
                     {{ __('Cart') }}

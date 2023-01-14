@@ -25,7 +25,8 @@
     var counter = 0;
     var aktivnePlosiny = [];
     var speed =0.5;
-
+    var url = "{{ route('gameAjax') }}";
+    var xhr = new XMLHttpRequest();
     /*CSRF Token Setup*/
     $.ajaxSetup({
         headers: {
@@ -123,12 +124,11 @@
         if(characterTop <= 0){
             if((counter-9) > 5) {
                 ajax();
-
             } else {
                 alert("Prehral si! Tvoje Skóre je: "+(counter-9));
             }
             clearInterval(plosiny);
-            location.reload();
+            //location.reload();
         }
         for(var i = 0; i < aktivnePlosiny.length; i++){
             let current = aktivnePlosiny[i];

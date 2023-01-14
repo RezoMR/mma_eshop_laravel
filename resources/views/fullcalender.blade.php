@@ -7,13 +7,13 @@
         <title>CALENDAR</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+{{-- prebraté knižnice na funkčnosť kalendára, robil som ajaxy  --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+               <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     </head>
     <body>
@@ -24,8 +24,6 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-
-
             var SITEURL = "{{ url('/') }}";
 
             $.ajaxSetup({
@@ -38,18 +36,13 @@
                 editable: true,
                 events: SITEURL + "/fullcalender",
                 displayEventTime: false,
-                editable: true,
                 eventRender: function (event, element, view) {
-                    if (event.allDay === 'true') {
-                        event.allDay = true;
-                    } else {
-                        event.allDay = false;
-                    }
+                    event.allDay = event.allDay === 'true';
                 },
                 selectable: true,
                 selectHelper: true,
                 select: function (start, end, allDay) {
-                    var title = prompt('Event Title:');
+                    var title = prompt('Zadajte názov akcie:');
                     if (title) {
                         var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
                         var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
@@ -63,7 +56,7 @@
                             },
                             type: "POST",
                             success: function (data) {
-                                displayMessage("Event Created Successfully");
+                                displayMessage("Úspešne ste pridali akciu");
 
                                 calendar.fullCalendar('renderEvent',
                                     {
@@ -94,12 +87,12 @@
                         },
                         type: "POST",
                         success: function (response) {
-                            displayMessage("Event Updated Successfully");
+                            displayMessage("Úspešne ste zmenili akciu");
                         }
                     });
                 },
                 eventClick: function (event) {
-                    var deleteMsg = confirm("Do you really want to delete?");
+                    var deleteMsg = confirm("Naozaj chcete vymazať túto akciu?");
                     if (deleteMsg) {
                         $.ajax({
                             type: "POST",
@@ -110,7 +103,7 @@
                             },
                             success: function (response) {
                                 calendar.fullCalendar('removeEvents', event.id);
-                                displayMessage("Event Deleted Successfully");
+                                displayMessage("Akcia úspešne vymazaná");
                             }
                         });
                     }
