@@ -5,24 +5,26 @@
 
     <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <title>Hra</title>
     </head>
 
 <body>
 <h1>Nahraj 1000 skóre a získaj zlavu</h1>
-<div id="game">
-    <div id="character"></div>
+<p>Ovládanie klávesami <-,-> alebo a,d </p>
+<div id="hra">
+    <div id="gulicka"></div>
 </div>
 
 <script type="text/javascript">
 
-    var character = document.getElementById("character");
-    var game = document.getElementById("game");
+    var gulicka = document.getElementById("gulicka");
+    var hra = document.getElementById("hra");
     var interval;
-    var doOboch = 0;
+    var stlacene = 0;
     var counter = 0;
-    var currentBlocks = [];
+    var aktivnePlosiny = [];
+    var speed =0.5;
 
     /*CSRF Token Setup*/
     $.ajaxSetup({
@@ -36,19 +38,19 @@
         $.ajax({
             type: 'POST',
             url: '{{ route('gameAjax') }}',
-            data: { codee: generateRandomString() },
+            data: { codee: generujNahodnyString() },
             success: function(response) {
                 alert("nepokazilo sa");
-                console.log('Score saved successfully!');
+                console.log('Code saved successfully!');
             },
             error: function(xhr) {
                 alert("pokazilo sa");
-                console.log('Error saving score: ' + xhr.responseText);
+                console.log('Error saving Code: ' + xhr.responseText);
             }
         });
     }
 
-    function generateRandomString(length) {
+    function generujNahodnyString(length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         var charactersLength = characters.length;
@@ -59,130 +61,107 @@
     }
 
     function PohybDolava(){
-        var left = parseInt(window.getComputedStyle(character).getPropertyValue("left"));
-        if(left>0){
-            character.style.left = left - 2 + "px";
+        var left = parseInt(window.getComputedStyle(gulicka).getPropertyValue("left"));
+        if(left>0){ //kontrola lavej hrany
+            gulicka.style.left = left - (speed*4) + "px";
         }
     }
     function PohybDoprava(){
-        var left = parseInt(window.getComputedStyle(character).getPropertyValue("left"));
-        if(left<380){
-            character.style.left = left + 2 + "px";
+        var left = parseInt(window.getComputedStyle(gulicka).getPropertyValue("left"));
+        if(left<380){ //kontrola pravej hrany
+            gulicka.style.left = left + (speed*4) + "px";
         }
     }
-    document.addEventListener("keydown", event => {
-        if(doOboch==0){
-            doOboch++;
-            if(event.key==="ArrowLeft"){
+    document.addEventListener("keydown", event => { //stlacenie tlacidla
+        if(stlacene===0){
+            stlacene++;
+            if(event.key==="ArrowLeft" || event.key==="a"){
                 interval = setInterval(PohybDolava, 1);
             }
-            if(event.key==="ArrowRight"){
+            if(event.key==="ArrowRight" || event.key==="d"){
                 interval = setInterval(PohybDoprava, 1);
             }
         }
     });
-    document.addEventListener("keyup", event => {
+    document.addEventListener("keyup", event => { //pustenie tlacidla
         clearInterval(interval);
-        doOboch=0;
+        stlacene=0;
     });
 
-    var blocks = setInterval(function(){
-        /*Get Site URL*/
-        var SITEURL = "{{ url('/') }}";
+    var plosiny = setInterval(function(){
 
-        var blockLast = document.getElementById("block"+(counter-1));
-        var holeLast = document.getElementById("hole"+(counter-1));
+        var poslednaPlosina = document.getElementById("plosina"+(counter-1));
+        var poslednaDiera = document.getElementById("diera"+(counter-1));
         if(counter>0){
-            var blockLastTop = parseInt(window.getComputedStyle(blockLast).getPropertyValue("top"));
-            var holeLastTop = parseInt(window.getComputedStyle(holeLast).getPropertyValue("top"));
+            //ziskavanie pozícii od horneho okraja
+            var poziciaPoslednejPlosiny = parseInt(window.getComputedStyle(poslednaPlosina).getPropertyValue("top"));
+            var poziciaPoslednejDiery = parseInt(window.getComputedStyle(poslednaDiera).getPropertyValue("top"));
         }
-        if(blockLastTop<400||counter==0){
-            var block = document.createElement("div");
-            var hole = document.createElement("div");
-            block.setAttribute("class", "block");
-            hole.setAttribute("class", "hole");
-            block.setAttribute("id", "block"+counter);
-            hole.setAttribute("id", "hole"+counter);
-            block.style.top = blockLastTop + 100 + "px";
-            hole.style.top = holeLastTop + 100 + "px";
+        if(poziciaPoslednejPlosiny<400||counter===0){ //vytvára iba plosiny v hre nie mimo
+            var plosina = document.createElement("div");
+            var diera = document.createElement("div");
+            plosina.setAttribute("class", "plosina");
+            diera.setAttribute("class", "diera");
+            plosina.setAttribute("id", "plosina"+counter);
+            diera.setAttribute("id", "diera"+counter);
+
+            plosina.style.top = poziciaPoslednejPlosiny + 100 + "px";
+            diera.style.top = poziciaPoslednejDiery + 100 + "px";
+
             var random = Math.floor(Math.random() * 360);
-            hole.style.left = random + "px";
-            game.appendChild(block);
-            game.appendChild(hole);
-            currentBlocks.push(counter);
+            diera.style.left = random + "px";
+
+            hra.appendChild(plosina);
+            hra.appendChild(diera);
+            aktivnePlosiny.push(counter);
+
             counter++;
         }
-        var characterTop = parseInt(window.getComputedStyle(character).getPropertyValue("top"));
-        var characterLeft = parseInt(window.getComputedStyle(character).getPropertyValue("left"));
+        var characterTop = parseInt(window.getComputedStyle(gulicka).getPropertyValue("top"));
+        var characterLeft = parseInt(window.getComputedStyle(gulicka).getPropertyValue("left"));
         var drop = 0;
         if(characterTop <= 0){
-            // if((counter-9)> 5){
-            //     alert("skoreee");
-            //     ajax();
-            // } else {
-            //     alert("Ste slabý");
-            // }
-
             if((counter-9) > 5) {
-                let randomString = generateRandomString(10);   // "W4dc4sg3Kf"
-
-                $.ajax({
-                    url: SITEURL + '/gameAjax',
-                    type: "POST",
-                    data: {
-                        codee: 'randomString',
-                    },
-                    success: function (response) {
-                        displayMessage("Event Updated Successfully");
-                        alert("Dosiahol si dostatočné skóre, tvoj kód na zľavu: " + randomString);
-                    },
-                    error: function(xhr) {
-                        alert("dojebalo sa");
-                        console.log('Error saving score: ' + xhr.responseText);
-                    }
-
-                });
+                ajax();
 
             } else {
                 alert("Prehral si! Tvoje Skóre je: "+(counter-9));
             }
-            clearInterval(blocks);
+            clearInterval(plosiny);
             location.reload();
         }
-        for(var i = 0; i < currentBlocks.length;i++){
-            let current = currentBlocks[i];
-            let iblock = document.getElementById("block"+current);
-            let ihole = document.getElementById("hole"+current);
-            let iblockTop = parseFloat(window.getComputedStyle(iblock).getPropertyValue("top"));
+        for(var i = 0; i < aktivnePlosiny.length; i++){
+            let current = aktivnePlosiny[i];
+            let iPlosina = document.getElementById("plosina"+current);
+            let ihole = document.getElementById("diera"+current);
+            let iPlosinatop = parseFloat(window.getComputedStyle(iPlosina).getPropertyValue("top"));
             let iholeLeft = parseFloat(window.getComputedStyle(ihole).getPropertyValue("left"));
-            iblock.style.top = iblockTop - 0.5 + "px";
-            ihole.style.top = iblockTop - 0.5 + "px";
-            if(iblockTop < -20){
-                currentBlocks.shift();
-                iblock.remove();
+            iPlosina.style.top = iPlosinatop - speed + "px";        //rychlost plosin
+            ihole.style.top = iPlosinatop - speed + "px";
+            if(iPlosinatop < -20){    //maze bloky z pola, ktoré sú nad vrchom
+                aktivnePlosiny.shift();
+                iPlosina.remove();
                 ihole.remove();
             }
-            if(iblockTop-20<characterTop && iblockTop>characterTop){
+            if(iPlosinatop-20<characterTop && iPlosinatop>characterTop){
                 drop++;
                 if(iholeLeft<=characterLeft && iholeLeft+20>=characterLeft){
                     drop = 0;
                 }
             }
         }
-        if(drop==0){
-            if(characterTop < 480){
-                character.style.top = characterTop + 2 + "px";
+        if(drop===0){
+            if(characterTop < 480){ //gulicka nepadne pod spodok hry
+                gulicka.style.top = characterTop + 2 + "px";
             }
         }else{
-            character.style.top = characterTop - 0.5 + "px";
+            gulicka.style.top = characterTop - 0.5 + "px";
         }
     },1);
 
 
 </script>
 </body>
-
-
 
 
 @endsection
