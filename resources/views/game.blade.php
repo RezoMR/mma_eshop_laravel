@@ -25,20 +25,18 @@
     var counter = 0;
     var aktivnePlosiny = [];
     var speed =0.5;
-    var url = "{{ route('gameAjax') }}";
     var xhr = new XMLHttpRequest();
     /*CSRF Token Setup*/
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
 
     function ajax() {
-
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         $.ajax({
             type: 'POST',
-            url: '{{ route('gameAjax') }}',
+            url: '{{url('/gameAjaxx')}}',
             data: { codee: generujNahodnyString() },
             success: function(response) {
                 alert("nepokazilo sa");

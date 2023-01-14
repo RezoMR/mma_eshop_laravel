@@ -11,6 +11,7 @@ class codes extends Model
 
 
     protected $fillable = [
-        'code',
+        'id','code',
     ];
+    public $timestamps = false;
 }

@@ -36,6 +36,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     });
 
+    Route::controller(\App\Http\Controllers\CartController::class)->group(function(){
+        Route::get('/cart', 'index')->name('cartView');
+        //Route::post('addToCart','addToCart')->name('addToCart');
+
+    });
+    Route::post('addToCart', [\App\Http\Controllers\CartController::class, 'addToCart'])->name('addToCart');
 
     Route::get('/contact', '\App\Http\Controllers\ContactController@index')->name('contactForm');
     Route::post('contact', '\App\Http\Controllers\ContactController@store')->name('sendContact');
@@ -53,9 +59,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     //-------------------GAME------
     Route::controller(\App\Http\Controllers\GameController::class)->group(function(){
-        Route::get('game', 'index')->name('game');
-        Route::post('game/ajax', 'gameAjaxx')->name('gameAjax');
+    Route::get('game', 'index')->name('game');
+////        Route::post('gameAjax', 'gameAjaxx')->name('gameAjax');
     });
+    Route::post('/gameAjaxx', [\App\Http\Controllers\GameController::class, 'gameAjaxx'])->name('gameAjaxx');
 
     //-------------------CALENDAR------
     Route::controller(\App\Http\Controllers\FullCalenderController::class)->group(function(){

@@ -27,9 +27,9 @@ class GameController extends Controller
     public function gameAjaxx(Request $request): \Illuminate\Http\JsonResponse
     {
 
-        $Code = codes::create([
-            'code' => $request->codee,
-        ]);
+        $Code = codes::create(
+            $request->codee
+        );
 
         return response()->json($Code);
     }

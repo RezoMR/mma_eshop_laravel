@@ -63,7 +63,6 @@ class FullCalenderController extends Controller
                 break;
 
             default:
-                # code...
                 break;
         }
     }
