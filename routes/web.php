@@ -25,6 +25,16 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::group(['middleware' => 'auth'], function () {
 
+    Route::controller(\App\Http\Controllers\BojovniciController::class)->group(function(){
+    Route::get('/bojovnici', 'index')->name('bojovnici');
+        Route::get('/addBoj', 'addBojView')->name('addBojView');
+        Route::post('addBoj','addBoj')->name('addBoj');
+        Route::get('/bojobnikDelete/{id}','delete')->name('delete.bojovnik');
+        Route::get('addPrehra/{id}','incPrehra')->name('addPrehra');
+        Route::get('addVyhra/{id}','incVyhra')->name('addVyhra');
+
+    });
+
     Route::controller(\App\Http\Controllers\shopController::class)->group(function(){
         Route::get('/shop', 'index')->name('shopView');
         Route::get('/addProd', 'addProdView')->name('addProdView');

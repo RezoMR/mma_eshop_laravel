@@ -34,6 +34,23 @@
             <a class="navbar_link" href="{{ route('game') }}">Game</a>
             <a class="navbar_link" href="{{route('home')}}">Home</a>
             <a class="navbar_link" href="{{route('calender')}}">Calendar</a>
+{{--            <a class="navbar_link" href="{{route('bojovnici')}}">Bojovnici</a>--}}
+
+            <a class="navbar_link" id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                Bojovnici
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+
+
+                <a class="dropdown-item" href="{{ route('bojovnici') }}" >
+                    {{ __('Bojovnici') }}
+                </a>
+                <a class="dropdown-item" href="{{ route('addBojView') }}" >
+                    {{ __('Pridaj Bojovnika') }}
+                </a>
+            </div>
+
+
             <a class="navbar_link" id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                 Shop
             </a>
