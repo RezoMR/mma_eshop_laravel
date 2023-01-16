@@ -26,8 +26,8 @@ class BojovniciController extends Controller
     {
         if($request->validate([
             'name' => 'string|max:255',
-            'vyhry' => 'integer',
-            'prehry' => 'integer',
+            'vyhry' => 'numeric',
+            'prehry' => 'numeric',
         ])) {
 
             $products = Bojovnik::create([
