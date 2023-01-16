@@ -79,7 +79,7 @@ class profileController extends Controller
                 'name' => 'nullable|string|max:255',
                 'lname' => 'nullable|string|max:255',
                 'address' => 'nullable|string|max:255',
-                'phone' => 'nullable|string|max:255',
+//                'phone' => 'nullable|numeric|decimal:10,0',
             ]);
 
             // aktualizujte údaje používateľa podľa údajov z formulára
@@ -92,9 +92,9 @@ class profileController extends Controller
             if($request->filled('address')) {
                 $user->address = $request->input('address');
             }
-            if($request->filled('phone')) {
-                $user->phone = $request->input('phone');
-            }
+//            if($request->filled('phone')) {
+//                $user->phone = $request->input('phone');
+//            }
 
 
 

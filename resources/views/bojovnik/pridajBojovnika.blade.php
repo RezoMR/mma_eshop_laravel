@@ -13,13 +13,13 @@
         <form method="post">
 
             <label for="name">Meno:</label><br>
-            <input type="text" id="name" name="name"><br>
+            <input type="text" id="name" name="name" required><br>
 
             <label for="vyhry">Výhry:</label><br>
-            <input type="text" id="vyhry" name="vyhry"><br>
+            <input type="text" id="vyhry" name="vyhry" required><br>
 
             <label for="prehry">Prehry:</label><br>
-            <input type="text" id="prehry" name="prehry"><br>
+            <input type="text" id="prehry" name="prehry" required><br>
 
             <input type="submit" value="Pridaj">
             @csrf @method('POST')

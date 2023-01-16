@@ -20,8 +20,8 @@
         <label for="address">Adresa:</label><br>
         <input type="text" id="address" name="address" value="{{ $user->address }}"><br>
 
-        <label for="phone">Tel.Číslo:</label><br>
-        <input type="text" id="phone" name=phone" value="{{ $user->phone}}"><br>
+{{--        <label for="phone">Tel.Číslo:</label><br>--}}
+{{--        <input type="text" id="phone" name=phone" value="{{ $user->phone}}"><br>--}}
 
         <label for="password">Zadajte heslo pre potvrdenie:</label><br>
         <input type="password" id="password" name="password"  placeholder="Zadajte heslo" ><br>
