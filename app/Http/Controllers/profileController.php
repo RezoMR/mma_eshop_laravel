@@ -79,7 +79,7 @@ class profileController extends Controller
                 'name' => 'nullable|string|max:255',
                 'lname' => 'nullable|string|max:255',
                 'address' => 'nullable|string|max:255',
-//                'phone' => 'nullable|numeric|decimal:10,0',
+//                'phone' => 'nullable|digits:10',
             ]);
 
             // aktualizujte údaje používateľa podľa údajov z formulára

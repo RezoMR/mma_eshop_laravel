@@ -24,19 +24,23 @@ class BojovniciController extends Controller
     }
     public function addBoj(Request $request)
     {
-        $request->validate([
+        if($request->validate([
             'name' => 'string|max:255',
             'vyhry' => 'integer',
             'prehry' => 'integer',
-        ]);
+        ])) {
 
-        $products = Bojovnik::create([
-            'name' => $request->name,
-            'vyhry' => $request->vyhry,
-            'prehry' => $request->prehry,
-        ]);
+            $products = Bojovnik::create([
+                'name' => $request->name,
+                'vyhry' => $request->vyhry,
+                'prehry' => $request->prehry,
+            ]);
+            return redirect()->route('bojovnici');
+        } else {
+            return redirect()->back()->with('msg', 'Zle zadané údaje');
+        }
 
-        return redirect()->route('bojovnici');
+
     }
 
     public function index(Request $request)

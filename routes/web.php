@@ -23,6 +23,11 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
+Route::get('/contact', '\App\Http\Controllers\ContactController@index')->name('contactForm');
+Route::post('contact', '\App\Http\Controllers\ContactController@store')->name('sendContact');
+
+
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::controller(\App\Http\Controllers\BojovniciController::class)->group(function(){
@@ -46,18 +51,16 @@ Route::group(['middleware' => 'auth'], function () {
 
     });
 
+    Route::get('/contactShow', '\App\Http\Controllers\ContactController@showAll')->name('contactShow');
+    Route::get('/contactDelete/{id}','\App\Http\Controllers\ContactController@delete')->name('deleteContact');
+
+
     Route::controller(\App\Http\Controllers\CartController::class)->group(function(){
         Route::get('/cart', 'index')->name('cartView');
         //Route::post('addToCart','addToCart')->name('addToCart');
 
     });
     Route::post('addToCart', [\App\Http\Controllers\CartController::class, 'addToCart'])->name('addToCart');
-
-    Route::get('/contact', '\App\Http\Controllers\ContactController@index')->name('contactForm');
-    Route::post('contact', '\App\Http\Controllers\ContactController@store')->name('sendContact');
-    Route::get('/contactShow', '\App\Http\Controllers\ContactController@showAll')->name('contactShow');
-    Route::get('/contactDelete/{id}','\App\Http\Controllers\ContactController@delete')->name('deleteContact');
-
 
     //-------------------PROFILE------
     Route::controller(\App\Http\Controllers\profileController::class)->group(function(){

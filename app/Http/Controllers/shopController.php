@@ -66,24 +66,27 @@ class shopController extends Controller
      */
     public function addProd(Request $request)
     {
-        $request->validate([
-            'name' => 'string|max:255',
-            'price' => 'string|max:255',
-            'img' => 'string|max:255',
-            'popis' => 'string|max:255',
-        ]);
+        if($request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'img' => 'required|string|max:255',
+            'popis' => 'required|string|max:255',
+        ])){
+            $string1 = "/imgs/";
+            $result = $string1 . "" . $request->img;
 
-        $string1 = "/imgs/";
-        $result = $string1 . "" . $request->img;
+            $products = products::create([
+                'name' => $request->name,
+                'price' => $request->cena,
+                'img' => $result,
+                'popis' => $request->popis,
+            ]);
 
-        $products = products::create([
-            'name' => $request->name,
-            'price' => $request->cena,
-            'img' => $result,
-            'popis' => $request->popis,
-        ]);
+            return redirect()->route('shopView');
+        } else {
+            return redirect()->back()->withErrors('Error', 'Zle zadane data');
+        }
 
-        return redirect()->route('shopView');
     }
 
     /**
@@ -114,36 +117,38 @@ class shopController extends Controller
     {
     $products = products::find($request->id);
 
-            $request->validate([
+            if($request->validate([
                 'name' => 'nullable|string|max:255',
                 'popis' => 'nullable|string|max:255',
-                'price' => 'nullable|string|max:255',
+                'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
                 'img' => 'nullable|string|max:255',
-            ]);
+            ])) {
+                // aktualizujte údaje používateľa podľa údajov z formulára
+                if($request->filled('name')) {
+                    $products->name = $request->input('name');
+                }
+                if($request->filled('price')) {
+                    $products->price = $request->input('price');
+                }
+                if($request->filled('popis')) {
+                    $products->popis = $request->input('popis');
+                }
+                if($request->filled('img')) {
+                    $products->img = $request->input('img');
+                }
 
-            // aktualizujte údaje používateľa podľa údajov z formulára
-            if($request->filled('name')) {
-                $products->name = $request->input('name');
+
+
+                // uložte aktualizácie do databázy
+                $products->save();
+
+                // presmerujte používateľa na stránku s profilom a oznámte mu úspešnú aktualizáciu
+                return redirect('shop')->with('success', 'Produkt bol úspešne aktualizovaný');
+            } else {
+                return redirect()->back()->with('error', 'zle zadaný vstup');
+
             }
-            if($request->filled('price')) {
-                $products->price = $request->input('price');
-            }
-            if($request->filled('popis')) {
-              $products->popis = $request->input('popis');
-            }
-            if($request->filled('img')) {
-             $products->img = $request->input('img');
-            }
-
-
-
-            // uložte aktualizácie do databázy
-            $products->save();
-
-            // presmerujte používateľa na stránku s profilom a oznámte mu úspešnú aktualizáciu
-            return redirect('shop')->with('success', 'Produkt bol úspešne aktualizovaný');
-
-        }
+    }
 
 }
 
